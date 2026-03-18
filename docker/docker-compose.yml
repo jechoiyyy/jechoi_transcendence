@@ -1,0 +1,116 @@
+services:
+    dev_server:
+        build:
+            context: ../server
+            dockerfile: Dockerfile
+        container_name: dev_server
+        env_file:
+            - .env
+        working_dir: /app
+        volumes:
+            - ../server:/app
+            - /app/node_modules
+        ports:
+            - "3000:3000"
+        networks: [appnet]
+        depends_on:
+            - mariadb
+            - redis
+        profiles: ["dev"]
+    
+    prov_server:
+        build:
+            context: ../server
+            dockerfile: Dockerfile
+        container_name: prov_server
+        env_file:
+            - .env
+        working_dir: /app
+        volumes:
+            - ../server:/app
+            - /app/node_modules
+        expose:
+            - "3000"
+        networks: [appnet]
+        depends_on:
+            - mariadb
+            - redis
+        profiles: ["prod"]
+
+    game_server:
+        build:
+            context: ../game
+            dockerfile: Dockerfile
+        container_name: game_server
+        working_dir: /app
+        volumes:
+            - ../game:/app
+            - /app/node_modules
+        networks: [appnet]
+        depends_on:
+            - redis
+        profiles: ["dev", "prod"]
+
+    redis:
+        image: redis:7
+        container_name: redis
+        expose:
+            - "6379"
+        networks: [appnet]
+
+    dev_client:
+        build:
+            context: ../client
+            dockerfile: Dockerfile
+            target: dev
+        container_name: dev_client
+        working_dir: /app
+        volumes:
+            - ../client:/app
+            - /app/node_modules
+        ports:
+            - "5173:5173"
+        depends_on: [dev_server]
+        networks: [appnet]
+        profiles: ["dev"]
+
+    mariadb:
+        build:
+            context: ../mariadb
+            dockerfile: Dockerfile
+        container_name: mariadb
+        env_file:
+            - .env
+        expose:
+            - "3306"
+        volumes:
+            - mariadb_data:/var/lib/mysql
+        networks: [appnet]
+
+    client_build:
+        build:
+            context: ../client
+            dockerfile: Dockerfile
+            target: build
+        container_name: client_build
+        image: client_build
+        networks: [appnet]
+        profiles: ["build"]
+
+    nginx:
+        build:
+            context: ../nginx
+            dockerfile: Dockerfile
+            target: nginx
+        container_name: nginx
+        ports:
+            - "8443:443"
+        networks: [appnet]
+        profiles: ["prod"]
+
+volumes:
+    mariadb_data:
+
+networks:
+    appnet:
+        driver: bridge

@@ -1,0 +1,15 @@
+frontend: React		+1
+backend: Express		+1
+WebSockets:			+2
+	고객 간 실시간 업데이트.
+	연결/연결 해제가 자연스러워야함
+	효율적인 메시지 방송
+interact:			+2
+	기본적인 채팅 (유저간 소통)
+	프로필 시스템	(유저의 정보 보기)
+	친구 기능 (친구 리스트를 볼 수 있어야함 + 추가와 제거 기능)
+API:				+2
+	DB ↔ API ↔ Client 구조
+	API 요청시 인증 수단(x-api-key or JWT or Bearer Token) 요청시 키가 없다면 401/403
+	요청 횟수 제한 (IP or API Key or 사용자 기준)
+ORM: ORM 계층을 사용	+1

@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["DOM", "ES2017"],
+    "jsx": "react-jsx",
+    
+    "baseUrl": "src",
+    "paths": {
+      "@app/*": ["app/*"],
+
+      "@api/*": ["services/api/*"],
+      "@socket/*": ["services/socket/*"],
+
+      "@components/*": ["components/*"],
+      "@controllers/*": ["controllers/*"],
+      "@form/*": ["components/form"],
+      "@layout/*": ["components/layout"],
+      "@section/*": ["components/section"],
+      "@ui/*": ["components/ui"],
+      
+      "@contexts/*": ["contexts/*"],
+      "@css/*": ["css/*"],
+      "@hooks/*": ["hooks/*"],
+      "@pages/*": ["pages/*"],
+      "@routes/*": ["routes/*"],
+      "@utils/*": ["utils/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist"]
+}
